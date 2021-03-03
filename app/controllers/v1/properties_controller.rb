@@ -1,6 +1,7 @@
 module V1
   class PropertiesController < ApplicationController
     before_action :load_property, only: %i[show update destroy]
+    before_action :require_login
 
     def index
       @properties = Property.all
