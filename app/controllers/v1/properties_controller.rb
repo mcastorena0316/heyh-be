@@ -1,10 +1,10 @@
 module V1
   class PropertiesController < ApplicationController
     before_action :load_property, only: %i[show update destroy]
+    before_action :load_properties, only: %i[index]
     before_action :require_login
 
     def index
-      @properties = Property.all
       render json: @properties
     end
 
@@ -40,6 +40,13 @@ module V1
     end
 
     private
+
+    def load_properties
+      @properties = Property.all
+      @properties = @properties.filter_by_status(params[:status]) if params[:status].present?
+      @properties = @properties.filter_by_max_rental_price(params[:rental_price]) if params[:rental_price].present?
+      @properties = @properties.order(created_at: :desc)
+    end
 
     def load_property
       @property = Property.find_by(id: params[:id])
