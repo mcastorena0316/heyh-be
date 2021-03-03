@@ -20,7 +20,7 @@
 ## About The Project
 
 The objective of this project was to create an API to retrieve information on the current properties of HOMIE 
-Live version of the project: [Live version]()
+Live version of the project: [Live version](https://backend-homie-api.herokuapp.com/)
 
 
 <!-- THE BACKEND API -->
@@ -44,7 +44,7 @@ The back-end for this project consists of a REST API that manages HOMIE's databa
 <!-- HOW TO USE IT -->
 ### How to use it
 
-You can always use the [live version]() or install it locally using these steps:
+You can always use the [live version](https://backend-homie-api.herokuapp.com/) or install it locally using these steps:
 
 
 #### Clone my repository
@@ -76,7 +76,7 @@ For retrieve, create, delete and update propierty's data, you need to login as a
 <!-- EndPoints -->
 ### Endpoints
 
-Base URL: https://dragon-test-drive-api.herokuapp.com
+Base URL: https://backend-homie-api.herokuapp.com/
 Base URL Local: http://localhost:3000/
 
 
