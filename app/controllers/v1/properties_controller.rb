@@ -15,7 +15,7 @@ module V1
     def create
       @property = Property.create(property_params)
       if @property.save
-        render json: @property
+        render json: { property: @property }, status: 200
       else
         render json: { error: 'Unable to create Property' }, status: 400
       end
