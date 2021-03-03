@@ -23,7 +23,7 @@ RSpec.configure do |config|
   # assertions if you prefer.
   config.expect_with :rspec do |expectations|
     config.include ApiHelper, type: :api
-    config.include Request::JsonHelpers, type: :api
+    config.include Request::JsonHelpers, type: :controller
     # This option will default to `true` in RSpec 4. It makes the `description`
     # and `failure_message` of custom matchers include text for helper methods
     # defined using `chain`, e.g.:

@@ -1,11 +1,12 @@
-require 'rails_helper'
+require 'spec_helper'
+require 'jwt'
 
 module V1
   RSpec.describe PropertiesController, type: :controller do
     before do
       @user = create(:user)
-      @token = JWT.encode({ user: User.first.id, exp: 15.minutes.from_now.to_i }, 's3cr3t')
-      request.headers['Authorization'] = @token
+      token = JWT.encode({ user_id: @user.id, exp: 15.minutes.from_now.to_i }, 's3cr3t')
+      request.headers['Authorization'] = token
     end
 
     let(:valid_attributes) do
@@ -21,9 +22,23 @@ module V1
     end
 
     describe 'GET #index' do
-      it 'assigns all propierties as @propierties' do
+      it 'assigns all properties as @propierties' do
         property = create(:property)
         get :index
+        expect(assigns(:properties)).to eq([property])
+      end
+
+      it 'filter by status' do
+        create(:property, status: 'published')
+        property = create(:property, status: 'available')
+        get :index, params: { status: 'available'}
+        expect(assigns(:properties)).to eq([property])
+      end
+
+      it 'filter by rental price' do
+        create(:property, rental_price: 5000)
+        property = create(:property, rental_price: 2000)
+        get :index, params: { rental_price: 3000}
         expect(assigns(:properties)).to eq([property])
       end
     end
@@ -36,15 +51,53 @@ module V1
       end
     end
 
-    # describe 'POST #create' do
-    #   context 'with valid params' do
-    #     it 'creates a new Property' do
-    #       post :create, params: { property: valid_attributes }
-    #       response_body = JSON.parse(response.body)
-    #       expect(response_body.keys).to eql ["property", "code"]
-    #       expect(response_body["code"]).to eql 200
-    #     end
-    #   end
-    # end
+    describe 'POST #create' do
+      context 'with valid params' do
+        it 'creates a Property' do
+          expect do
+            post :create, params: {property: valid_attributes}
+          end.to change(Property, :count).by(1)
+        end
+
+        it 'assigns a newly created property as @property' do
+          post :create, params: {property: valid_attributes}
+          expect(assigns(:property)).to be_a(Property)
+          expect(assigns(:property)).to be_persisted
+        end
+      end
+    end
+
+    describe 'PUT #update' do
+      context 'with valid params' do
+        let(:new_attributes) do
+          {
+            status: 'published'
+          }
+        end
+
+        it 'updates the requested property' do
+          property = create(:property)
+          old_value = property.status
+          put :update, params: { id: property.to_param, property: new_attributes }
+          property.reload
+          expect(property.status).not_to eql(old_value)
+        end
+
+        it 'assigns the requested property as  @property' do
+          property = create(:property)
+          put :update, params: { id: property.to_param, property: new_attributes }
+          expect(assigns(:property)).to eq(property)
+        end
+      end
+    end
+
+    describe 'DELETE #destroy' do
+      it 'destroys the requested property' do
+        property = create(:property)
+        expect do
+          delete :destroy, params: { id: property.to_param }
+        end.to change(Property, :count).by(-1)
+      end
+    end
   end
 end
