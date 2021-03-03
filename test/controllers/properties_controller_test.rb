@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PropertyControllerTest < ActionDispatch::IntegrationTest
+class PropertiesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
