@@ -60,7 +60,11 @@ module V1
         :status,
         :tenant_email,
         :tenant_phone,
-        :tenant_name
+        :tenant_name,
+        tenant_availability: [
+          :start_date,
+          :end_date
+        ]
       )
     end
   end

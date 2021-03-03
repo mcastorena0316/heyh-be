@@ -19,6 +19,7 @@ RSpec.describe Property, type: :model do
     it { is_expected.to validate_presence_of(:tenant_email) }
     it { is_expected.to validate_presence_of(:tenant_name) }
     it { is_expected.to validate_presence_of(:status) }
+    it { is_expected.to validate_presence_of(:tenant_availability) }
     it { is_expected.to validate_inclusion_of(:status).in_array(%w[published available deleted]) }
   end
 end
